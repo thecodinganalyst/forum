@@ -19,7 +19,7 @@ public class PostController {
         this.postService = postService;
     }
 
-    @GetMapping(value = "/{topicId}/posts")
+    @GetMapping(value = "/topics/{topicId}/posts")
     public List<Post> list(@PathVariable("topicId") Long topicId){
         return postService.list(topicId);
     }
