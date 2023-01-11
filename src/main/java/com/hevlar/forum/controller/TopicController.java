@@ -4,8 +4,10 @@ import com.hevlar.forum.model.Topic;
 import com.hevlar.forum.service.TopicService;
 import org.springframework.http.HttpStatus;
 import org.springframework.web.bind.annotation.*;
+import org.springframework.web.server.ResponseStatusException;
 
 import java.util.List;
+import java.util.NoSuchElementException;
 
 @RestController
 @RequestMapping("/api/v1/topics")
@@ -30,16 +32,30 @@ public class TopicController {
 
     @GetMapping(value = "/{topicId}")
     public Topic getTopic(@PathVariable("topicId") Long topicId){
-        return topicService.get(topicId);
+        try{
+            return topicService.get(topicId);
+        }catch (NoSuchElementException e){
+            throw new ResponseStatusException(HttpStatus.NOT_FOUND);
+        }
     }
 
     @PutMapping
     public Topic updateTopic(@RequestBody Topic topic){
-        return topicService.update(topic);
+        try{
+            return topicService.update(topic);
+        }catch (NoSuchElementException e){
+            throw new ResponseStatusException(HttpStatus.NOT_FOUND);
+        }
+
     }
 
     @DeleteMapping(value = "/{topicId}")
     public void deleteTopic(@PathVariable("topicId") Long topicId){
-        topicService.delete(topicId);
+        try{
+            topicService.delete(topicId);
+        }catch (NoSuchElementException e){
+            throw new ResponseStatusException(HttpStatus.NOT_FOUND);
+        }
+
     }
 }

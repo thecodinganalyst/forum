@@ -4,8 +4,10 @@ import com.hevlar.forum.model.Post;
 import com.hevlar.forum.service.PostService;
 import org.springframework.http.HttpStatus;
 import org.springframework.web.bind.annotation.*;
+import org.springframework.web.server.ResponseStatusException;
 
 import java.util.List;
+import java.util.NoSuchElementException;
 
 @RestController
 @RequestMapping("/api/v1")
@@ -30,16 +32,29 @@ public class PostController {
 
     @GetMapping(value = "/post/{postId}")
     public Post get(@PathVariable("postId") Long postId){
-        return postService.get(postId);
+        try{
+            return postService.get(postId);
+        }catch (NoSuchElementException e){
+            throw new ResponseStatusException(HttpStatus.NOT_FOUND);
+        }
     }
 
     @PutMapping("/post")
     public Post update(@RequestBody Post post){
-        return postService.update(post);
+        try{
+            return postService.update(post);
+        }catch (NoSuchElementException e){
+            throw new ResponseStatusException(HttpStatus.NOT_FOUND);
+        }
+
     }
 
     @DeleteMapping(value = "/post/{postId}")
     public void delete(@PathVariable("postId") Long postId){
-        postService.delete(postId);
+        try{
+            postService.delete(postId);
+        }catch (NoSuchElementException e){
+            throw new ResponseStatusException(HttpStatus.NOT_FOUND);
+        }
     }
 }

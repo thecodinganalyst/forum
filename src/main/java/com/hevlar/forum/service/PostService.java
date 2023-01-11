@@ -6,6 +6,7 @@ import org.springframework.stereotype.Service;
 
 import java.time.LocalDateTime;
 import java.util.List;
+import java.util.NoSuchElementException;
 
 @Service
 public class PostService {
@@ -37,7 +38,7 @@ public class PostService {
     }
 
     public void delete(Long postId){
-        if(!postRepository.existsById(postId)) throw new IllegalArgumentException();
+        if(!postRepository.existsById(postId)) throw new NoSuchElementException();
         postRepository.deleteById(postId);
     }
 }
