@@ -9,6 +9,7 @@ import org.springframework.web.server.ResponseStatusException;
 import java.util.List;
 import java.util.NoSuchElementException;
 
+@CrossOrigin(origins = {"*"})
 @RestController
 @RequestMapping("/api/v1/topics")
 public class TopicController {
