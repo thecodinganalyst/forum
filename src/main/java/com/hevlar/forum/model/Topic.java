@@ -2,13 +2,15 @@ package com.hevlar.forum.model;
 
 import com.fasterxml.jackson.annotation.JsonManagedReference;
 import jakarta.persistence.*;
-import lombok.Data;
+import lombok.*;
 import org.hibernate.annotations.CreationTimestamp;
 import org.hibernate.annotations.UpdateTimestamp;
 
 import java.time.LocalDateTime;
 import java.util.List;
 
+@NoArgsConstructor
+@RequiredArgsConstructor
 @Entity
 @Data
 @Table(name = "TOPIC")
@@ -18,6 +20,7 @@ public class Topic {
     @Column(name = "TOPIC_ID")
     Long topicId;
 
+    @NonNull
     @Column(name = "TITLE", unique = true, nullable = false)
     String title;
 
