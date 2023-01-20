@@ -31,7 +31,7 @@ public class PostController {
         return postService.create(post);
     }
 
-    @GetMapping(value = "/post/{postId}")
+    @GetMapping(value = "/posts/{postId}")
     public Post get(@PathVariable("postId") Long postId){
         try{
             return postService.get(postId);
@@ -40,7 +40,7 @@ public class PostController {
         }
     }
 
-    @PutMapping("/post")
+    @PutMapping("/posts")
     public Post update(@RequestBody Post post){
         try{
             return postService.update(post);
@@ -50,7 +50,7 @@ public class PostController {
 
     }
 
-    @DeleteMapping(value = "/post/{postId}")
+    @DeleteMapping(value = "/posts/{postId}")
     public void delete(@PathVariable("postId") Long postId){
         try{
             postService.delete(postId);
