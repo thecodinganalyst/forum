@@ -1,6 +1,5 @@
 package com.hevlar.forum.model;
 
-import com.fasterxml.jackson.annotation.JsonManagedReference;
 import jakarta.persistence.*;
 import lombok.*;
 import org.hibernate.annotations.CreationTimestamp;
@@ -34,7 +33,6 @@ public class Topic {
     @Column(name = "UPDATED", nullable = false)
     LocalDateTime updated;
 
-    @JsonManagedReference
     @OneToMany(mappedBy = "topic", cascade = CascadeType.ALL)
     private List<Post> posts;
 }
