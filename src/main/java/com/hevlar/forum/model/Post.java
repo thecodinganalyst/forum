@@ -1,6 +1,7 @@
 package com.hevlar.forum.model;
 
-import com.fasterxml.jackson.annotation.JsonBackReference;
+import com.fasterxml.jackson.annotation.JsonIdentityInfo;
+import com.fasterxml.jackson.annotation.ObjectIdGenerators;
 import jakarta.persistence.*;
 import lombok.*;
 import org.hibernate.annotations.CreationTimestamp;
@@ -34,8 +35,8 @@ public class Post {
     LocalDateTime updated;
 
     @NonNull
-    @JsonBackReference
-    @ManyToOne(fetch = FetchType.LAZY)
+    @JsonIdentityInfo(generator = ObjectIdGenerators.PropertyGenerator.class, property = "topicId", scope = Topic.class)
+    @ManyToOne
     @JoinColumn(name = "TOPIC_ID")
     private Topic topic;
 }
