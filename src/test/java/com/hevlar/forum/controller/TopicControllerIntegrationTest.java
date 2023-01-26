@@ -38,7 +38,7 @@ public class TopicControllerIntegrationTest{
 
     @Test
     @Order(1)
-    public void whenPostTopic_thenReturnStatusCreatedAndTopic() throws Exception {
+    void whenPostTopic_thenReturnStatusCreatedAndTopic() throws Exception {
         Topic topic = new Topic("Topic");
         mvc.perform(post(topicsEndpoint).contentType(MediaType.APPLICATION_JSON).content(objectMapper.writeValueAsString(topic)))
                 .andExpect(status().isCreated())
@@ -50,7 +50,7 @@ public class TopicControllerIntegrationTest{
 
     @Test
     @Order(2)
-    public void whenListTopic_thenReturnStatusOkAndTopicList() throws Exception {
+    void whenListTopic_thenReturnStatusOkAndTopicList() throws Exception {
         mvc.perform(get(topicsEndpoint))
                 .andExpect(status().isOk())
                 .andExpect(content().contentTypeCompatibleWith(MediaType.APPLICATION_JSON))
@@ -59,7 +59,7 @@ public class TopicControllerIntegrationTest{
 
     @Test
     @Order(3)
-    public void whenPutTopic_thenReturnStatusOkAndUpdatedTopic() throws Exception {
+    void whenPutTopic_thenReturnStatusOkAndUpdatedTopic() throws Exception {
         Topic updatedTopic = Topic.builder().topicId(1L).title("Updated Topic").build();
         mvc.perform(put(topicsEndpoint).contentType(MediaType.APPLICATION_JSON).content(objectMapper.writeValueAsString(updatedTopic)))
                 .andExpect(status().isOk())
@@ -72,7 +72,7 @@ public class TopicControllerIntegrationTest{
 
     @Test
     @Order(4)
-    public void whenGetTopic_thenReturnStatusOkAndTopic() throws Exception {
+    void whenGetTopic_thenReturnStatusOkAndTopic() throws Exception {
         mvc.perform(get(topicsEndpoint + "/1"))
                 .andExpect(status().isOk())
                 .andExpect(content().contentTypeCompatibleWith(MediaType.APPLICATION_JSON))
@@ -84,14 +84,14 @@ public class TopicControllerIntegrationTest{
 
     @Test
     @Order(5)
-    public void givenTopicIdDoesNotExist_whenGetTopic_thenReturn404NotFound() throws Exception {
+    void givenTopicIdDoesNotExist_whenGetTopic_thenReturn404NotFound() throws Exception {
         mvc.perform(get(topicsEndpoint + "/100"))
                 .andExpect(status().isNotFound());
     }
 
     @Test
     @Order(6)
-    public void givenTopicIdDoesNotExist_whenPutTopic_thenReturn404NotFound() throws Exception {
+    void givenTopicIdDoesNotExist_whenPutTopic_thenReturn404NotFound() throws Exception {
         Topic updatedTopic = Topic.builder().topicId(100L).title("Updated Topic").build();
         mvc.perform(put(topicsEndpoint + "/100").contentType(MediaType.APPLICATION_JSON).content(objectMapper.writeValueAsString(updatedTopic)))
                 .andExpect(status().isMethodNotAllowed());
@@ -99,14 +99,14 @@ public class TopicControllerIntegrationTest{
 
     @Test
     @Order(7)
-    public void givenTopicIdDoesNotExist_whenDeleteTopic_thenReturn404NotFound() throws Exception {
+    void givenTopicIdDoesNotExist_whenDeleteTopic_thenReturn404NotFound() throws Exception {
         mvc.perform(delete(topicsEndpoint + "/100"))
                 .andExpect(status().isNotFound());
     }
 
     @Test
     @Order(8)
-    public void whenDeleteTopic_thenReturnStatusOk() throws Exception {
+    void whenDeleteTopic_thenReturnStatusOk() throws Exception {
         mvc.perform(get(topicsEndpoint + "/1"))
                 .andExpect(status().isOk());
     }

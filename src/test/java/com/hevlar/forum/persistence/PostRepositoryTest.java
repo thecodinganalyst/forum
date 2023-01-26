@@ -26,7 +26,7 @@ public class PostRepositoryTest {
     private PostRepository postRepository;
 
     @Test
-    public void givenTopicHasPosts_whenFindAllByTopic_TopicId_thenReturnTopics(){
+    void givenTopicHasPosts_whenFindAllByTopic_TopicId_thenReturnTopics(){
         //given
         Topic topic = new Topic("First Topic");
         entityManager.persist(topic);

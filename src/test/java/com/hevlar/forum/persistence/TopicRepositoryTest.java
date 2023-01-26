@@ -26,7 +26,7 @@ public class TopicRepositoryTest {
 
     @Test
     @DisplayName("Topic title should be unique")
-    public void givenTopicTitleAlreadyPresent_WhenIdenticalTopicIsInserted_thenInsertionShouldFail(){
+    void givenTopicTitleAlreadyPresent_WhenIdenticalTopicIsInserted_thenInsertionShouldFail(){
         //given
         Topic firstTopic = new Topic("First Topic");
         entityManager.persist(firstTopic);

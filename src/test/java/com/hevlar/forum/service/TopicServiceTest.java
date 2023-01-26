@@ -27,7 +27,7 @@ public class TopicServiceTest {
     TopicService topicService;
 
     @Test
-    public void givenTopicAlreadyExists_whenTopicIsUpdated_thenTopicCreatedIsFromRepository(){
+    void givenTopicAlreadyExists_whenTopicIsUpdated_thenTopicCreatedIsFromRepository(){
         //given
         LocalDateTime createdDateTime = LocalDateTime.now().minusHours(1);
         Topic topic = Topic.builder()
@@ -47,7 +47,7 @@ public class TopicServiceTest {
     }
 
     @Test()
-    public void givenTopicDoesNotExist_whenDelete_thenThrowException(){
+    void givenTopicDoesNotExist_whenDelete_thenThrowException(){
         //given
         given(topicRepository.existsById(1L)).willReturn(false);
 

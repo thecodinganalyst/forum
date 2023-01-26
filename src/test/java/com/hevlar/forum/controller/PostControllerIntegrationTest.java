@@ -40,7 +40,7 @@ public class PostControllerIntegrationTest {
     Topic topic;
 
     @BeforeAll
-    public void setup() throws Exception {
+    void setup() throws Exception {
         topic = Topic.builder().topicId(1L).title("Topic").build();
         MvcResult result = mvc.perform(post("/api/v1/topics").contentType(MediaType.APPLICATION_JSON).content(objectMapper.writeValueAsString(topic)))
                 .andExpect(status().isCreated())
@@ -51,7 +51,7 @@ public class PostControllerIntegrationTest {
 
     @Test
     @Order(1)
-    public void whenCreatePost_thenReturnStatusCreatedAndPost() throws Exception {
+    void whenCreatePost_thenReturnStatusCreatedAndPost() throws Exception {
         Post post = Post.builder().text("New Post").topic(topic).build();
         String postJson = objectMapper.writeValueAsString(post);
         mvc.perform(post(postEndpoint).contentType(MediaType.APPLICATION_JSON).content(postJson))
@@ -66,7 +66,7 @@ public class PostControllerIntegrationTest {
 
     @Test
     @Order(2)
-    public void whenListPost_thenReturnPostList() throws Exception {
+    void whenListPost_thenReturnPostList() throws Exception {
         var result = mvc.perform(get("/api/v1/topics/1/posts"))
                 .andExpect(status().isOk())
                 .andExpect(jsonPath("$.length()").value(1))
@@ -76,7 +76,7 @@ public class PostControllerIntegrationTest {
 
     @Test
     @Order(3)
-    public void whenPutPost_thenReturnStatusOkAndUpdatedPost() throws Exception {
+    void whenPutPost_thenReturnStatusOkAndUpdatedPost() throws Exception {
         Post post = Post.builder().postId(1L).text("Updated Post").topic(topic).build();
         mvc.perform(put("/api/v1/posts")
                 .contentType(MediaType.APPLICATION_JSON)
@@ -87,7 +87,7 @@ public class PostControllerIntegrationTest {
 
     @Test
     @Order(4)
-    public void whenGetPost_thenReturnStatusOkAndPost() throws Exception {
+    void whenGetPost_thenReturnStatusOkAndPost() throws Exception {
         mvc.perform(get("/api/v1/posts/1"))
                 .andExpect(content().contentType(MediaType.APPLICATION_JSON))
                 .andExpect(jsonPath("$.text").value("Updated Post"));

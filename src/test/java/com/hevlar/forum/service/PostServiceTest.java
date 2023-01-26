@@ -29,7 +29,7 @@ public class PostServiceTest {
     PostService postService;
 
     @Test
-    public void givenPostAlreadyExists_whenPostIsUpdated_thenPostCreatedIsFromRepository(){
+    void givenPostAlreadyExists_whenPostIsUpdated_thenPostCreatedIsFromRepository(){
         //given
         Topic topic = new Topic("Topic");
         LocalDateTime createdDateTime = LocalDateTime.now().minusHours(1);
@@ -51,7 +51,7 @@ public class PostServiceTest {
     }
 
     @Test
-    public void givenPostDoesNotExist_whenDelete_thenThrowException(){
+    void givenPostDoesNotExist_whenDelete_thenThrowException(){
         //given
         given(postRepository.existsById(1L)).willReturn(false);
 

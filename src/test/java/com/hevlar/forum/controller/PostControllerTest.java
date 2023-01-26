@@ -35,14 +35,14 @@ public class PostControllerTest {
     final String api = "/api/v1/posts";
 
     @Test
-    public void givenPostDoesNotExists_whenGetPost_thenReturn404NotFound() throws Exception {
+    void givenPostDoesNotExists_whenGetPost_thenReturn404NotFound() throws Exception {
         given(postService.get(1L)).willThrow(NoSuchElementException.class);
         mockMvc.perform(get(api + "/1"))
                 .andExpect(status().isNotFound());
     }
 
     @Test
-    public void givenPostDoesNotExists_whenPutPost_thenReturn404NotFound() throws Exception {
+    void givenPostDoesNotExists_whenPutPost_thenReturn404NotFound() throws Exception {
         given(postService.update(any())).willThrow(NoSuchElementException.class);
         Topic topic = new Topic("topic");
         mockMvc.perform(
@@ -53,7 +53,7 @@ public class PostControllerTest {
     }
 
     @Test
-    public void givenPostDoesNotExists_whenDeletePost_thenReturn404NotFound() throws Exception {
+    void givenPostDoesNotExists_whenDeletePost_thenReturn404NotFound() throws Exception {
         doThrow(NoSuchElementException.class).when(postService).delete(1L);
         mockMvc.perform(delete(api + "/1"))
                 .andExpect(status().isNotFound());
