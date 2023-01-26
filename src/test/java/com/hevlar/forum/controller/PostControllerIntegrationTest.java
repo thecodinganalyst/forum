@@ -28,7 +28,7 @@ import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.
 @TestMethodOrder(MethodOrderer.OrderAnnotation.class)
 @TestInstance(TestInstance.Lifecycle.PER_CLASS)
 @DirtiesContext
-public class PostControllerIntegrationTest {
+class PostControllerIntegrationTest {
 
     @Autowired
     MockMvc mvc;

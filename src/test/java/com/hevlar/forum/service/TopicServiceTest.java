@@ -19,7 +19,7 @@ import static org.junit.jupiter.api.Assertions.assertThrows;
 import static org.mockito.BDDMockito.*;
 
 @ExtendWith(MockitoExtension.class)
-public class TopicServiceTest {
+class TopicServiceTest {
     @Mock
     TopicRepository topicRepository;
 

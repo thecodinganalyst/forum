@@ -22,7 +22,7 @@ import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.
 
 @ExtendWith(SpringExtension.class)
 @WebMvcTest(PostController.class)
-public class PostControllerTest {
+class PostControllerTest {
     @Autowired
     MockMvc mockMvc;
 

@@ -17,7 +17,7 @@ import static org.hamcrest.collection.IsIterableContainingInAnyOrder.containsInA
 
 @ExtendWith(SpringExtension.class)
 @DataJpaTest
-public class PostRepositoryTest {
+class PostRepositoryTest {
 
     @Autowired
     private TestEntityManager entityManager;

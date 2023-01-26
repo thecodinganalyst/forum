@@ -16,7 +16,7 @@ import static org.junit.jupiter.api.Assertions.assertThrows;
 
 @ExtendWith(SpringExtension.class)
 @DataJpaTest
-public class TopicRepositoryTest {
+class TopicRepositoryTest {
 
     @Autowired
     private TestEntityManager entityManager;

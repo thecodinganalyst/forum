@@ -24,7 +24,7 @@ import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.
 
 @ExtendWith(SpringExtension.class)
 @WebMvcTest(TopicController.class)
-public class TopicControllerTest {
+class TopicControllerTest {
 
     @Autowired
     MockMvc mockMvc;
