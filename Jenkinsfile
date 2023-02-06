@@ -8,7 +8,7 @@ pipeline {
         }
         stage('test'){
             steps {
-                sh 'gradle test'
+                sh 'gradle test sonarqube'
             }
         }
     }
