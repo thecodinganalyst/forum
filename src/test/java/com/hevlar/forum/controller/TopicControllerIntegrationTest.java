@@ -38,14 +38,6 @@ class TopicControllerIntegrationTest{
 
     final String topicsEndpoint = "/api/v1/topics";
 
-//    @BeforeAll
-//    public void setup(){
-//        mvc = MockMvcBuilders
-//                .webAppContextSetup(context)
-//                .apply(springSecurity())
-//                .build();
-//    }
-
     @Test
     @Order(1)
     void whenPostTopic_thenReturnStatusCreatedAndTopic() throws Exception {
