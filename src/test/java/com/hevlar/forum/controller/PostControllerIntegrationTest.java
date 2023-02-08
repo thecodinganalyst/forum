@@ -17,6 +17,7 @@ import org.springframework.test.web.servlet.MvcResult;
 import static org.hamcrest.MatcherAssert.assertThat;
 import static org.hamcrest.Matchers.is;
 import static org.hamcrest.Matchers.notNullValue;
+import static org.springframework.security.test.web.servlet.request.SecurityMockMvcRequestPostProcessors.csrf;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.get;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.post;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.put;
@@ -42,7 +43,10 @@ class PostControllerIntegrationTest {
     @BeforeAll
     void setup() throws Exception {
         topic = Topic.builder().topicId(1L).title("Topic").build();
-        MvcResult result = mvc.perform(post("/api/v1/topics").contentType(MediaType.APPLICATION_JSON).content(objectMapper.writeValueAsString(topic)))
+        MvcResult result = mvc.perform(post("/api/v1/topics")
+                        .contentType(MediaType.APPLICATION_JSON)
+                        .content(objectMapper.writeValueAsString(topic))
+                        .with(csrf()))
                 .andExpect(status().isCreated())
                 .andExpect(jsonPath("$.topicId").value(1))
                 .andReturn();
@@ -54,7 +58,7 @@ class PostControllerIntegrationTest {
     void whenCreatePost_thenReturnStatusCreatedAndPost() throws Exception {
         Post post = Post.builder().text("New Post").topic(topic).build();
         String postJson = objectMapper.writeValueAsString(post);
-        mvc.perform(post(postEndpoint).contentType(MediaType.APPLICATION_JSON).content(postJson))
+        mvc.perform(post(postEndpoint).contentType(MediaType.APPLICATION_JSON).content(postJson).with(csrf()))
                 .andExpect(status().isCreated())
                 .andExpect(content().contentTypeCompatibleWith(MediaType.APPLICATION_JSON))
                 .andExpectAll(
@@ -79,8 +83,9 @@ class PostControllerIntegrationTest {
     void whenPutPost_thenReturnStatusOkAndUpdatedPost() throws Exception {
         Post post = Post.builder().postId(1L).text("Updated Post").topic(topic).build();
         mvc.perform(put("/api/v1/posts")
-                .contentType(MediaType.APPLICATION_JSON)
-                .content(objectMapper.writeValueAsString(post)))
+                        .with(csrf())
+                        .contentType(MediaType.APPLICATION_JSON)
+                        .content(objectMapper.writeValueAsString(post)))
                 .andExpect(status().isOk())
                 .andExpect(jsonPath("$.text").value("Updated Post"));
     }

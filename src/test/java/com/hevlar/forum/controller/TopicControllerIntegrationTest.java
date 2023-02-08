@@ -11,9 +11,11 @@ import org.springframework.boot.test.context.SpringBootTest;
 
 import org.springframework.http.MediaType;
 import org.springframework.test.annotation.DirtiesContext;
+
 import org.springframework.test.context.junit.jupiter.SpringExtension;
 import org.springframework.test.web.servlet.MockMvc;
 
+import static org.springframework.security.test.web.servlet.request.SecurityMockMvcRequestPostProcessors.csrf;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.delete;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.get;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.post;
@@ -40,7 +42,10 @@ class TopicControllerIntegrationTest{
     @Order(1)
     void whenPostTopic_thenReturnStatusCreatedAndTopic() throws Exception {
         Topic topic = new Topic("Topic");
-        mvc.perform(post(topicsEndpoint).contentType(MediaType.APPLICATION_JSON).content(objectMapper.writeValueAsString(topic)))
+        mvc.perform(post(topicsEndpoint)
+                        .contentType(MediaType.APPLICATION_JSON)
+                        .content(objectMapper.writeValueAsString(topic))
+                        .with(csrf()))
                 .andExpect(status().isCreated())
                 .andExpect(content().contentTypeCompatibleWith(MediaType.APPLICATION_JSON))
                 .andExpect(jsonPath("$.title").value("Topic"))
@@ -61,7 +66,10 @@ class TopicControllerIntegrationTest{
     @Order(3)
     void whenPutTopic_thenReturnStatusOkAndUpdatedTopic() throws Exception {
         Topic updatedTopic = Topic.builder().topicId(1L).title("Updated Topic").build();
-        mvc.perform(put(topicsEndpoint).contentType(MediaType.APPLICATION_JSON).content(objectMapper.writeValueAsString(updatedTopic)))
+        mvc.perform(put(topicsEndpoint)
+                        .contentType(MediaType.APPLICATION_JSON)
+                        .content(objectMapper.writeValueAsString(updatedTopic))
+                        .with(csrf()))
                 .andExpect(status().isOk())
                 .andExpect(content().contentTypeCompatibleWith(MediaType.APPLICATION_JSON))
                 .andExpect(jsonPath("$.topicId").value(1L))
@@ -93,14 +101,17 @@ class TopicControllerIntegrationTest{
     @Order(6)
     void givenTopicIdDoesNotExist_whenPutTopic_thenReturn404NotFound() throws Exception {
         Topic updatedTopic = Topic.builder().topicId(100L).title("Updated Topic").build();
-        mvc.perform(put(topicsEndpoint + "/100").contentType(MediaType.APPLICATION_JSON).content(objectMapper.writeValueAsString(updatedTopic)))
+        mvc.perform(put(topicsEndpoint + "/100")
+                        .contentType(MediaType.APPLICATION_JSON)
+                        .content(objectMapper.writeValueAsString(updatedTopic))
+                        .with(csrf()))
                 .andExpect(status().isMethodNotAllowed());
     }
 
     @Test
     @Order(7)
     void givenTopicIdDoesNotExist_whenDeleteTopic_thenReturn404NotFound() throws Exception {
-        mvc.perform(delete(topicsEndpoint + "/100"))
+        mvc.perform(delete(topicsEndpoint + "/100").with(csrf()))
                 .andExpect(status().isNotFound());
     }
 
