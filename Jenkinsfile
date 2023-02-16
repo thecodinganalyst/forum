@@ -12,12 +12,6 @@ pipeline {
         stage('test'){
             steps {
                 sh 'gradle test'
-                step([$class: 'JUnitResultArchiver', testResults: 'build/test-results/test/*.xml'])
-            }
-            post {
-                always {
-                    junit 'build/test-results/test/*.xml'
-                }
             }
         }
         stage("quality review") {
@@ -38,7 +32,7 @@ pipeline {
         }
         stage('deploy') {
             steps {
-                withCredentials([usernamePassword(credentialsId: 'dockerhub-secret', passwordVariable: 'DOCKER_HUB_PASSWORD', usernameVariable: 'DOCKER_HUB_USERNAME')]) {
+                withCredentials([usernamePassword(credentialsId: 'dockerhub-credentials', passwordVariable: 'DOCKER_HUB_PASSWORD', usernameVariable: 'DOCKER_HUB_USERNAME')]) {
                     sh 'docker build -t forum:latest .'
                     sh 'docker login -u $DOCKER_HUB_USERNAME -p $DOCKER_HUB_PASSWORD'
                     sh 'docker push forum:latest'
