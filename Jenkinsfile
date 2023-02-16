@@ -29,8 +29,10 @@ pipeline {
         }
         stage('publish') {
             steps {
-                def image = docker.build "forum:latest"
-                image.push()
+                node {
+                    def image = docker.build "forum:latest"
+                    image.push()
+                }
             }
         }
     }
