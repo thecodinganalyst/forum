@@ -27,13 +27,5 @@ pipeline {
                 }
             }
         }
-        stage('publish') {
-            steps {
-                script {
-                    def image = docker.build "forum:latest"
-                    image.push()
-                }
-            }
-        }
     }
 }
