@@ -60,3 +60,7 @@ jacocoTestReport{
         xml.enabled true
     }
 }
+
+bootRun {
+    systemProperties['spring.profiles.active'] = 'dev'
+}
