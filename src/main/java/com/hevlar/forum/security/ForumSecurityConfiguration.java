@@ -23,8 +23,6 @@ public class ForumSecurityConfiguration {
                 .and()
                 .logout()
                 .and()
-                .httpBasic()
-                .and()
                 .cors()
                 .and()
                 .csrf()

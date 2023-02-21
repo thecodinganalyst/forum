@@ -25,8 +25,12 @@ public class ForumRole {
     @Column(name = "ROLE_NAME", unique = true)
     String name;
 
+    @NonNull
+    @Column(name = "VALID")
+    Boolean valid;
+
     @CreationTimestamp
-    @Column(name = "CREATED", nullable = false)
+    @Column(name = "CREATED", nullable = false, updatable = false)
     LocalDateTime created;
 
     @UpdateTimestamp

@@ -45,7 +45,7 @@ public class ForumUser {
     Boolean locked;
 
     @CreationTimestamp
-    @Column(name = "CREATED", nullable = false)
+    @Column(name = "CREATED", nullable = false, updatable = false)
     LocalDateTime created;
 
     @UpdateTimestamp
