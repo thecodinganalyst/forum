@@ -10,8 +10,6 @@ import org.springframework.security.test.context.support.WithMockUser;
 import org.springframework.test.context.junit.jupiter.SpringExtension;
 import org.springframework.test.web.servlet.MockMvc;
 
-import java.util.List;
-
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.get;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.*;
 
@@ -34,7 +32,7 @@ public class AuthenticationTest {
     @WithMockUser
     void givenUserLoggedIn_whenCallSwagger_thenOk() throws Exception {
         mockMvc.perform(get("/swagger-ui.html"))
-                .andExpect(status().isOk());
+                .andExpect(status().is3xxRedirection());
     }
 
 }
