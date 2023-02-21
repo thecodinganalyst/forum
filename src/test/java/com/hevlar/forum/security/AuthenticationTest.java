@@ -9,7 +9,6 @@ import org.springframework.security.test.context.support.WithAnonymousUser;
 import org.springframework.security.test.context.support.WithMockUser;
 import org.springframework.test.context.junit.jupiter.SpringExtension;
 import org.springframework.test.web.servlet.MockMvc;
-
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.get;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.*;
 
@@ -24,15 +23,15 @@ public class AuthenticationTest {
     @Test
     @WithAnonymousUser
     void givenAnonymousUser_whenCallSwagger_thenRedirectToLogin() throws Exception {
-        mockMvc.perform(get("/swagger-ui.html"))
+        mockMvc.perform(get("/swagger-ui/index.html"))
                 .andExpect(status().is3xxRedirection());
     }
 
     @Test
-    @WithMockUser
+    @WithMockUser(username = "USER")
     void givenUserLoggedIn_whenCallSwagger_thenOk() throws Exception {
-        mockMvc.perform(get("/swagger-ui.html"))
-                .andExpect(status().is3xxRedirection());
+        mockMvc.perform(get("/swagger-ui/index.html"))
+                .andExpect(status().isOk());
     }
 
 }
