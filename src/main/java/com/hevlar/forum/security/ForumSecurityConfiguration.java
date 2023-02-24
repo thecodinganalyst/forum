@@ -17,6 +17,7 @@ public class ForumSecurityConfiguration {
     @Bean
     public SecurityFilterChain filterChain(HttpSecurity httpSecurity) throws Exception{
         httpSecurity.authorizeHttpRequests()
+                .requestMatchers("/api/v1/users/registerUser").permitAll()
                 .anyRequest().authenticated()
                 .and()
                 .formLogin()

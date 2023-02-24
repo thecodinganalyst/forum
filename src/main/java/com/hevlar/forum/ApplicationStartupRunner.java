@@ -26,11 +26,16 @@ public class ApplicationStartupRunner implements ApplicationRunner {
     public static String USER_ROLE_ID = "USER";
     public static String ADMIN_ROLE_ID = "ADMIN";
     public static String ADMIN_USER_ID = "ADMIN";
+    public static String ADMIN_USER_GIVEN_NAME = "Administrator";
+    public static String ADMIN_USER_FAMILY_NAME = "Forum";
+    public static String USER_ROLE_NAME = "User";
+    public static String ADMIN_ROLE_NAME = "Administrator";
+
 
     @Override
     public void run(ApplicationArguments args) {
-        roleService.create(new ForumRole(ADMIN_ROLE_ID, "Administrator", true));
-        roleService.create(new ForumRole(USER_ROLE_ID, "User", true));
-        userService.createAdmin(new ForumUser(ADMIN_USER_ID, "Administrator", "Forum", "admin@forum.com", passwordEncoder.encode("password"), true, false));
+        roleService.create(new ForumRole(ADMIN_ROLE_ID, ADMIN_ROLE_NAME, true));
+        roleService.create(new ForumRole(USER_ROLE_ID, USER_ROLE_NAME, true));
+        userService.createAdmin(new ForumUser(ADMIN_USER_ID, ADMIN_USER_GIVEN_NAME, ADMIN_USER_FAMILY_NAME, "admin@forum.com", passwordEncoder.encode("password"), true, false));
     }
 }
