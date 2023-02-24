@@ -10,7 +10,7 @@ public class ForumUserToUserRoleMapper {
                 forumUser.getUserId(),
                 forumUser.getGivenName(),
                 forumUser.getFamilyName(),
-                forumUser.getPassword(),
+                forumUser.getEmail(),
                 forumUser.getRoles()
                         .stream()
                         .map(ForumRole::getName)
