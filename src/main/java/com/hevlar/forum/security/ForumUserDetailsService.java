@@ -29,7 +29,7 @@ public class ForumUserDetailsService implements UserDetailsService {
                 .orElseThrow(() -> new UsernameNotFoundException("User id " + userId + " not found"));
 
         return new User(
-                user.getEmail(),
+                user.getUserId(),
                 user.getPassword(),
                 user.getRoles()
                         .stream()
