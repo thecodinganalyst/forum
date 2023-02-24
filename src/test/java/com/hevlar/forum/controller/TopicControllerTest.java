@@ -29,7 +29,7 @@ import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.
 @ExtendWith(SpringExtension.class)
 @ContextConfiguration(classes = {ForumSecurityConfiguration.class, TopicController.class})
 @WebMvcTest
-@WithMockUser(username = "USER")
+@WithMockUser
 class TopicControllerTest {
 
     @Autowired

@@ -27,7 +27,7 @@ import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.
 @ExtendWith(SpringExtension.class)
 @WebMvcTest(value = PostController.class)
 @ContextConfiguration(classes = { ForumSecurityConfiguration.class, PostController.class })
-@WithMockUser(username = "USER")
+@WithMockUser
 class PostControllerTest {
     @Autowired
     MockMvc mockMvc;

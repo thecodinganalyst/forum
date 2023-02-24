@@ -28,7 +28,7 @@ public class AuthenticationTest {
     }
 
     @Test
-    @WithMockUser(username = "USER")
+    @WithMockUser
     void givenUserLoggedIn_whenCallSwagger_thenOk() throws Exception {
         mockMvc.perform(get("/swagger-ui/index.html"))
                 .andExpect(status().isOk());
