@@ -17,8 +17,8 @@ public record UserRegistrationDto(
         @NotEmpty(message = "Given name cannot be empty")
         String givenName,
 
-        @NotNull(message = "Family Name cannot be null")
-        @NotEmpty(message = "Family Name cannot be empty")
+        @NotNull(message = "Family name cannot be null")
+        @NotEmpty(message = "Family name cannot be empty")
         String familyName,
 
         @ValidEmail(message = "Email is not valid")
@@ -26,10 +26,12 @@ public record UserRegistrationDto(
         @NotEmpty(message = "Email cannot be empty")
         String email,
 
-        @NotNull(message = "Password cannot be empty")
-        @NotEmpty(message = "Password cannot be null")
+        @NotNull(message = "Password cannot be null")
+        @NotEmpty(message = "Password cannot be empty")
         @Size(min = 8, message = "Password must be at least 8 characters long")
         String password,
+        @NotNull(message = "Matching password cannot be null")
+        @NotEmpty(message = "Matching password cannot be empty")
         String matchingPassword
 ) {
 }
