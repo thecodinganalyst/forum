@@ -1,5 +1,6 @@
 package com.hevlar.forum.service;
 
+import com.hevlar.forum.ApplicationStartupConfig;
 import com.hevlar.forum.model.ForumRole;
 import com.hevlar.forum.persistence.ForumRoleRepository;
 import org.springframework.stereotype.Service;
@@ -12,8 +13,10 @@ import java.util.List;
 public class ForumRoleService {
 
     ForumRoleRepository repository;
+    ApplicationStartupConfig applicationStartupConfig;
 
-    public ForumRoleService(ForumRoleRepository repository){
+    public ForumRoleService(ForumRoleRepository repository, ApplicationStartupConfig applicationStartupConfig){
+        this.applicationStartupConfig = applicationStartupConfig;
         this.repository = repository;
     }
 
@@ -38,10 +41,10 @@ public class ForumRoleService {
     }
 
     public ForumRole getUserRole(){
-        return this.repository.findById("USER").orElseThrow();
+        return this.repository.findById(applicationStartupConfig.getUserRoleId()).orElseThrow();
     }
 
     public ForumRole getAdminRole(){
-        return this.repository.findById("ADMIN").orElseThrow();
+        return this.repository.findById(applicationStartupConfig.getAdminRoleId()).orElseThrow();
     }
 }

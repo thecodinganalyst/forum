@@ -3,6 +3,7 @@ package com.hevlar.forum.controller;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.hevlar.forum.controller.dto.ErrorDto;
 import com.hevlar.forum.controller.dto.UserRegistrationDto;
+import com.hevlar.forum.ApplicationStartupConfig;
 import org.junit.jupiter.api.MethodOrderer;
 import org.junit.jupiter.api.Order;
 import org.junit.jupiter.api.Test;
@@ -17,7 +18,6 @@ import org.springframework.test.web.servlet.MvcResult;
 import java.util.Arrays;
 import java.util.List;
 
-import static com.hevlar.forum.ApplicationStartupRunner.USER_ROLE_NAME;
 import static org.hamcrest.Matchers.*;
 import static org.springframework.security.test.web.servlet.request.SecurityMockMvcRequestPostProcessors.csrf;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.post;
@@ -36,6 +36,9 @@ class ForumUserControllerIntegrationTest {
 
     @Autowired
     ObjectMapper objectMapper;
+
+    @Autowired
+    ApplicationStartupConfig applicationStartupConfig;
 
     @Test
     @Order(1)
@@ -62,7 +65,7 @@ class ForumUserControllerIntegrationTest {
                         jsonPath("$.familyName").value("familyName"),
                         jsonPath("$.email").value("email@forum.com"),
                         jsonPath("$.roles").isArray(),
-                        jsonPath("$.roles[0]").value(USER_ROLE_NAME)
+                        jsonPath("$.roles[0]").value(applicationStartupConfig.getUserRoleName())
                 );
 
     }

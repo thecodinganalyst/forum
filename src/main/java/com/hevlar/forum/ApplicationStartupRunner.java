@@ -17,25 +17,31 @@ public class ApplicationStartupRunner implements ApplicationRunner {
 
     PasswordEncoder passwordEncoder;
 
-    public ApplicationStartupRunner(ForumUserService userService, ForumRoleService roleService, PasswordEncoder passwordEncoder){
+    ApplicationStartupConfig applicationStartupConfig;
+
+    public ApplicationStartupRunner(ForumUserService userService, ForumRoleService roleService, PasswordEncoder passwordEncoder, ApplicationStartupConfig applicationStartupConfig){
         this.userService = userService;
         this.roleService = roleService;
         this.passwordEncoder = passwordEncoder;
+        this.applicationStartupConfig = applicationStartupConfig;
     }
-
-    public static String USER_ROLE_ID = "USER";
-    public static String ADMIN_ROLE_ID = "ADMIN";
-    public static String ADMIN_USER_ID = "ADMIN";
-    public static String ADMIN_USER_GIVEN_NAME = "Administrator";
-    public static String ADMIN_USER_FAMILY_NAME = "Forum";
-    public static String USER_ROLE_NAME = "User";
-    public static String ADMIN_ROLE_NAME = "Administrator";
-
 
     @Override
     public void run(ApplicationArguments args) {
-        roleService.create(new ForumRole(ADMIN_ROLE_ID, ADMIN_ROLE_NAME, true));
-        roleService.create(new ForumRole(USER_ROLE_ID, USER_ROLE_NAME, true));
-        userService.createAdmin(new ForumUser(ADMIN_USER_ID, ADMIN_USER_GIVEN_NAME, ADMIN_USER_FAMILY_NAME, "admin@forum.com", passwordEncoder.encode("Th1sIsASup3rC0mpl1c@t3dP@$sw0rdT0R3m3mb3rIH0pe"), true, false));
+        ForumRole adminRole = new ForumRole(applicationStartupConfig.getAdminRoleId(), applicationStartupConfig.getAdminRoleName());
+        roleService.create(adminRole);
+
+        ForumRole userRole = new ForumRole(applicationStartupConfig.getUserRoleId(), applicationStartupConfig.getUserRoleName());
+        roleService.create(userRole);
+
+        ForumUser adminUser = new ForumUser(
+                applicationStartupConfig.getAdminUserId(),
+                "Administrator",
+                "Forum",
+                applicationStartupConfig.getAdminUserEmail(),
+                passwordEncoder.encode(applicationStartupConfig.getAdminUserPassword())
+        );
+        userService.createAdmin(adminUser);
     }
+
 }
