@@ -20,9 +20,7 @@ import static org.hamcrest.Matchers.is;
 import static org.hamcrest.Matchers.notNullValue;
 import static org.springframework.security.test.web.servlet.request.SecurityMockMvcRequestPostProcessors.csrf;
 import static org.springframework.security.test.web.servlet.request.SecurityMockMvcRequestPostProcessors.user;
-import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.get;
-import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.post;
-import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.put;
+import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.*;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.*;
 
 @ExtendWith(SpringExtension.class)
@@ -102,5 +100,20 @@ class PostControllerIntegrationTest {
                 .andExpect(jsonPath("$.text").value("Updated Post"));
     }
 
+    @Test
+    @Order(5)
+    void whenDeletePost_thenReturnStatusOk_AndWillNotDeleteTheTopic() throws Exception {
+        mvc.perform(delete("/api/v1/posts/1").with(csrf()))
+                .andExpect(status().isOk());
+        mvc.perform(get("/api/v1/topics/1").with(csrf()))
+                .andExpect(status().isOk());
+    }
+
+    @Test
+    @Order(6)
+    void givenPostAlreadyDeleted_whenDeletePost_thenReturnStatusNotFound() throws Exception {
+        mvc.perform(delete("/api/v1/posts/1").with(csrf()))
+                .andExpect(status().isNotFound());
+    }
 
 }

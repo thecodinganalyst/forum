@@ -28,7 +28,12 @@ public class PostController {
     @PostMapping("/posts")
     @ResponseStatus(HttpStatus.CREATED)
     public Post create(@RequestBody Post post){
-        return postService.create(post);
+        try{
+            return postService.create(post);
+        }catch (Exception e){
+            throw new ResponseStatusException(HttpStatus.BAD_REQUEST, e.getMessage());
+        }
+
     }
 
     @GetMapping(value = "/posts/{postId}")
