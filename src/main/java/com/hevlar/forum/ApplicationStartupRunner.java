@@ -36,6 +36,6 @@ public class ApplicationStartupRunner implements ApplicationRunner {
     public void run(ApplicationArguments args) {
         roleService.create(new ForumRole(ADMIN_ROLE_ID, ADMIN_ROLE_NAME, true));
         roleService.create(new ForumRole(USER_ROLE_ID, USER_ROLE_NAME, true));
-        userService.createAdmin(new ForumUser(ADMIN_USER_ID, ADMIN_USER_GIVEN_NAME, ADMIN_USER_FAMILY_NAME, "admin@forum.com", passwordEncoder.encode("AC0pml3xP@ssw0rd123!"), true, false));
+        userService.createAdmin(new ForumUser(ADMIN_USER_ID, ADMIN_USER_GIVEN_NAME, ADMIN_USER_FAMILY_NAME, "admin@forum.com", passwordEncoder.encode("Th1sIsASup3rC0mpl1c@t3dP@$sw0rdT0R3m3mb3rIH0pe"), true, false));
     }
 }
