@@ -46,7 +46,9 @@ tasks.named('test') {
 
 sonarqube {
     properties {
+        property "sonar.host.url", property('sonar.host.url')
         property "sonar.projectKey", property('sonar.project.key')
+        property "sonar.login", property('sonar.login')
     }
 }
 
@@ -59,4 +61,8 @@ jacocoTestReport{
     reports {
         xml.enabled true
     }
+}
+
+bootRun {
+    systemProperties['spring.profiles.active'] = 'dev'
 }

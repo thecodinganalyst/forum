@@ -2,6 +2,7 @@ package com.hevlar.forum.controller;
 
 import com.fasterxml.jackson.databind.ObjectMapper;
 
+import com.hevlar.forum.model.Post;
 import com.hevlar.forum.model.Topic;
 import org.junit.jupiter.api.*;
 import org.junit.jupiter.api.extension.ExtendWith;
@@ -10,6 +11,7 @@ import org.springframework.boot.test.autoconfigure.web.servlet.AutoConfigureMock
 import org.springframework.boot.test.context.SpringBootTest;
 
 import org.springframework.http.MediaType;
+import org.springframework.security.test.context.support.WithMockUser;
 import org.springframework.test.annotation.DirtiesContext;
 
 import org.springframework.test.context.junit.jupiter.SpringExtension;
@@ -28,6 +30,7 @@ import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.
 @TestMethodOrder(MethodOrderer.OrderAnnotation.class)
 @TestInstance(TestInstance.Lifecycle.PER_CLASS)
 @DirtiesContext
+@WithMockUser
 class TopicControllerIntegrationTest{
 
     @Autowired
@@ -117,9 +120,25 @@ class TopicControllerIntegrationTest{
 
     @Test
     @Order(8)
-    void whenDeleteTopic_thenReturnStatusOk() throws Exception {
-        mvc.perform(get(topicsEndpoint + "/1"))
+    void givenTopicHasPosts_whenDeleteTopic_thenReturnStatusOk_andAccompanyingPostsAreDeleted() throws Exception {
+        // given
+        String topicJson = mvc.perform(get(topicsEndpoint + "/1")).andReturn().getResponse().getContentAsString();
+        Topic topic = objectMapper.readValue(topicJson, Topic.class);
+        topic.setPosts(null);
+        Post post = Post.builder().text("New Post").topic(topic).build();
+        String postJson = objectMapper.writeValueAsString(post);
+        mvc.perform(post("/api/v1/posts")
+                .contentType(MediaType.APPLICATION_JSON)
+                .content(postJson)
+                .with(csrf()))
+                .andExpect(status().isCreated());
+
+        // when
+        mvc.perform(delete(topicsEndpoint + "/1").with(csrf()))
                 .andExpect(status().isOk());
+
+        // then
+        mvc.perform(get("/api/v1/posts/1")).andExpect(status().isNotFound());
     }
 
 }

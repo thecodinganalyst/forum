@@ -9,6 +9,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.autoconfigure.web.servlet.AutoConfigureMockMvc;
 import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.http.MediaType;
+import org.springframework.security.test.context.support.WithMockUser;
 import org.springframework.test.annotation.DirtiesContext;
 import org.springframework.test.context.junit.jupiter.SpringExtension;
 import org.springframework.test.web.servlet.MockMvc;
@@ -18,9 +19,8 @@ import static org.hamcrest.MatcherAssert.assertThat;
 import static org.hamcrest.Matchers.is;
 import static org.hamcrest.Matchers.notNullValue;
 import static org.springframework.security.test.web.servlet.request.SecurityMockMvcRequestPostProcessors.csrf;
-import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.get;
-import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.post;
-import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.put;
+import static org.springframework.security.test.web.servlet.request.SecurityMockMvcRequestPostProcessors.user;
+import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.*;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.*;
 
 @ExtendWith(SpringExtension.class)
@@ -29,6 +29,7 @@ import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.
 @TestMethodOrder(MethodOrderer.OrderAnnotation.class)
 @TestInstance(TestInstance.Lifecycle.PER_CLASS)
 @DirtiesContext
+@WithMockUser
 class PostControllerIntegrationTest {
 
     @Autowired
@@ -46,6 +47,7 @@ class PostControllerIntegrationTest {
         MvcResult result = mvc.perform(post("/api/v1/topics")
                         .contentType(MediaType.APPLICATION_JSON)
                         .content(objectMapper.writeValueAsString(topic))
+                        .with(user("user@test.com"))
                         .with(csrf()))
                 .andExpect(status().isCreated())
                 .andExpect(jsonPath("$.topicId").value(1))
@@ -98,5 +100,20 @@ class PostControllerIntegrationTest {
                 .andExpect(jsonPath("$.text").value("Updated Post"));
     }
 
+    @Test
+    @Order(5)
+    void whenDeletePost_thenReturnStatusOk_AndWillNotDeleteTheTopic() throws Exception {
+        mvc.perform(delete("/api/v1/posts/1").with(csrf()))
+                .andExpect(status().isOk());
+        mvc.perform(get("/api/v1/topics/1").with(csrf()))
+                .andExpect(status().isOk());
+    }
+
+    @Test
+    @Order(6)
+    void givenPostAlreadyDeleted_whenDeletePost_thenReturnStatusNotFound() throws Exception {
+        mvc.perform(delete("/api/v1/posts/1").with(csrf()))
+                .andExpect(status().isNotFound());
+    }
 
 }
