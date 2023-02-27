@@ -40,4 +40,8 @@ public class ForumUserService {
         return repository.save(forumUser);
     }
 
+    public ForumUser getUserByUserId(String userId){
+        return repository.findById(userId).orElseThrow();
+    }
+
 }
