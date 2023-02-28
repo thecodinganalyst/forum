@@ -14,9 +14,7 @@ public class ApplicationStartupRunner implements ApplicationRunner {
 
     ForumUserService userService;
     ForumRoleService roleService;
-
     PasswordEncoder passwordEncoder;
-
     ApplicationStartupConfig applicationStartupConfig;
 
     public ApplicationStartupRunner(ForumUserService userService, ForumRoleService roleService, PasswordEncoder passwordEncoder, ApplicationStartupConfig applicationStartupConfig){
