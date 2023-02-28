@@ -4,7 +4,6 @@ import jakarta.persistence.*;
 import lombok.*;
 import org.hibernate.annotations.CreationTimestamp;
 import org.hibernate.annotations.UpdateTimestamp;
-import org.springframework.boot.context.properties.bind.ConstructorBinding;
 
 import java.time.LocalDateTime;
 import java.util.Collection;
@@ -57,7 +56,6 @@ public class ForumUser {
     @JoinTable(name = "USERS_ROLES", joinColumns = @JoinColumn(name = "USER_ID", referencedColumnName = "USER_ID"), inverseJoinColumns = @JoinColumn(name = "ROLE_ID", referencedColumnName = "ROLE_ID"))
     Collection<ForumRole> roles;
 
-    @ConstructorBinding
     public ForumUser(@NonNull String userId, @NonNull String givenName, @NonNull String familyName, @NonNull String email, @NonNull String password){
         this.userId = userId;
         this.givenName = givenName;

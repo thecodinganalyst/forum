@@ -4,7 +4,6 @@ import jakarta.persistence.*;
 import lombok.*;
 import org.hibernate.annotations.CreationTimestamp;
 import org.hibernate.annotations.UpdateTimestamp;
-import org.springframework.boot.context.properties.bind.ConstructorBinding;
 
 import java.time.LocalDateTime;
 import java.util.Collection;
@@ -41,7 +40,6 @@ public class ForumRole {
     @ManyToMany(mappedBy = "roles")
     Collection<ForumUser> users;
 
-    @ConstructorBinding
     public ForumRole(@NonNull String roleId, @NonNull String name){
         this.roleId = roleId;
         this.name = name;
