@@ -3,6 +3,7 @@ package com.hevlar.forum.service;
 import com.hevlar.forum.controller.dto.UserRegistrationDto;
 import com.hevlar.forum.model.ForumUser;
 import com.hevlar.forum.persistence.ForumUserRepository;
+import org.springframework.dao.DuplicateKeyException;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
@@ -23,12 +24,12 @@ public class ForumUserService {
         this.roleService = roleService;
     }
 
-    public ForumUser registerUser(UserRegistrationDto dto) throws Exception {
+    public ForumUser registerUser(UserRegistrationDto dto) {
         if(repository.existsByEmail(dto.email())){
-            throw new Exception("Email already exists");
+            throw new DuplicateKeyException("Email already exists");
         }
         if(repository.existsById(dto.userId())){
-            throw new Exception("User Id already exists");
+            throw new DuplicateKeyException("User Id already exists");
         }
         ForumUser user = new ForumUser(dto.userId(), dto.givenName(), dto.familyName(), dto.email(), passwordEncoder.encode(dto.password()), true, false);
         user.setRoles(List.of(roleService.getUserRole()));

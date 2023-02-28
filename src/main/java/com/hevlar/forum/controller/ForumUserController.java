@@ -48,14 +48,13 @@ public class ForumUserController {
     }
 
     private static ErrorDto getErrorDto(ObjectError error) {
-        FieldError fieldError = error instanceof FieldError ? (FieldError) error : null;
-        String field = fieldError != null ? fieldError.getField() : null;
-        String rejectedValue = fieldError != null ? String.valueOf(fieldError.getRejectedValue()) : null;
+        String field = error instanceof FieldError fieldError ? fieldError.getField() : null;
+        String rejectedValue = error instanceof FieldError fieldError ? String.valueOf(fieldError.getRejectedValue()) : null;
+
         return new ErrorDto(
                 error.getObjectName(),
                 field,
                 rejectedValue,
                 error.getDefaultMessage());
     }
-
 }
