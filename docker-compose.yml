@@ -10,7 +10,7 @@ services:
       MARIADB_USER: "forumApp"
       MARIADB_PASSWORD_HASH: "*0A7A4E64514FC3F69614759689B0E6D5F9C286CD"
     ports:
-      - "3306:3306"
+      - "3307:3306"
     volumes:
       - C:\Mariadb\data:/var/lib/mysql
     networks:
