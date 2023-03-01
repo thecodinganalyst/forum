@@ -4,7 +4,7 @@ import com.hevlar.forum.controller.dto.UserRegistrationDto;
 import jakarta.validation.ConstraintValidator;
 import jakarta.validation.ConstraintValidatorContext;
 
-public class CustomPasswordMatchingValidator implements ConstraintValidator<PasswordMatching, Object> {
+public class CustomPasswordMatchingValidator implements ConstraintValidator<PasswordMatching, UserRegistrationDto> {
 
     @Override
     public void initialize(PasswordMatching constraintAnnotation) {
@@ -12,8 +12,7 @@ public class CustomPasswordMatchingValidator implements ConstraintValidator<Pass
     }
 
     @Override
-    public boolean isValid(Object value, ConstraintValidatorContext context) {
-        UserRegistrationDto user = (UserRegistrationDto) value;
-        return user.password().equals(user.matchingPassword());
+    public boolean isValid(UserRegistrationDto value, ConstraintValidatorContext context) {
+        return value.password().equals(value.matchingPassword());
     }
 }
