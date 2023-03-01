@@ -8,6 +8,8 @@ import org.junit.jupiter.api.MethodOrderer;
 import org.junit.jupiter.api.Order;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.TestMethodOrder;
+import org.junit.jupiter.params.ParameterizedTest;
+import org.junit.jupiter.params.provider.ValueSource;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.autoconfigure.web.servlet.AutoConfigureMockMvc;
 import org.springframework.boot.test.context.SpringBootTest;
@@ -49,8 +51,8 @@ class ForumUserControllerIntegrationTest {
                 "givenName",
                 "familyName",
                 "email@forum.com",
-                "Password123",
-                "Password123"
+                "Password123!",
+                "Password123!"
         );
         String userRegistrationDtoJson = objectMapper.writeValueAsString(userRegistrationDto);
 
@@ -79,8 +81,8 @@ class ForumUserControllerIntegrationTest {
                 "givenName",
                 "familyName",
                 "email@forum.com",
-                "Password123",
-                "Password123"
+                "Password123!",
+                "Password123!"
         );
         String userRegistrationDtoJson = objectMapper.writeValueAsString(userRegistrationDto);
 
@@ -102,8 +104,8 @@ class ForumUserControllerIntegrationTest {
                 "givenName",
                 "familyName",
                 "email@forum2.com",
-                "Password123",
-                "Password123"
+                "Password123!",
+                "Password123!"
         );
         String userRegistrationDtoJson = objectMapper.writeValueAsString(userRegistrationDto);
 
@@ -135,7 +137,7 @@ class ForumUserControllerIntegrationTest {
                         .contentType(MediaType.APPLICATION_JSON)
                         .content(userRegistrationDtoJson).with(csrf()))
                 .andExpect(status().isBadRequest())
-                .andExpect(jsonPath("$.length()").value(8))
+                .andExpect(jsonPath("$.length()").value(9))
                 .andReturn();
 
         // then
@@ -150,7 +152,8 @@ class ForumUserControllerIntegrationTest {
                 new ErrorDto("userRegistrationDto", "email", "", "Email cannot be empty"),
                 new ErrorDto("userRegistrationDto", "password", "", "Password cannot be empty"),
                 new ErrorDto("userRegistrationDto", "matchingPassword", "", "Matching password cannot be empty"),
-                new ErrorDto("userRegistrationDto", "password", "", "Password must be at least 8 characters long")
+                new ErrorDto("userRegistrationDto", "password", "", "Password must be at least 8 characters long"),
+                new ErrorDto("userRegistrationDto", "password", "", "Password must be at least 8 characters long, contains at least 1 upper case letter, 1 lower case letter, and 1 digit")
         );
 
         assertThat(errorDtos, containsInAnyOrder(expectedErrorDtos.toArray()));
@@ -165,8 +168,8 @@ class ForumUserControllerIntegrationTest {
                 "givenName",
                 "familyName",
                 "email@forum2.com",
-                "Password123",
-                "Password1234"
+                "Password123!",
+                "Password1234!"
         );
         String userRegistrationDtoJson = objectMapper.writeValueAsString(userRegistrationDto);
 
@@ -198,8 +201,8 @@ class ForumUserControllerIntegrationTest {
                 "givenName",
                 "familyName",
                 "email@forum",
-                "Password123",
-                "Password123"
+                "Password123!",
+                "Password123!"
         );
         String userRegistrationDtoJson = objectMapper.writeValueAsString(userRegistrationDto);
 
@@ -217,6 +220,39 @@ class ForumUserControllerIntegrationTest {
 
         List<ErrorDto> expectedErrorDtos = List.of(
                 new ErrorDto("userRegistrationDto", "email", "email@forum", "Email is not valid")
+        );
+
+        assertThat(errorDtos, containsInAnyOrder(expectedErrorDtos.toArray()));
+    }
+
+    @ParameterizedTest
+    @ValueSource(strings = {"Password123", "password123", "%^$28291"})
+    void whenRegisterUserWithInvalidPassword_shouldFail(String password) throws Exception {
+        // given
+        UserRegistrationDto userRegistrationDto = new UserRegistrationDto(
+                "user1",
+                "givenName",
+                "familyName",
+                "email@forum.com",
+                password,
+                password
+        );
+        String userRegistrationDtoJson = objectMapper.writeValueAsString(userRegistrationDto);
+
+        // when
+        MvcResult result = mockMvc.perform(post("/api/v1/users/registerUser")
+                        .contentType(MediaType.APPLICATION_JSON)
+                        .content(userRegistrationDtoJson).with(csrf()))
+                .andExpect(status().isBadRequest())
+                .andExpect(jsonPath("$.length()").value(1))
+                .andReturn();
+
+        // then
+        String jsonResult = result.getResponse().getContentAsString();
+        List<ErrorDto> errorDtos = Arrays.stream(objectMapper.readValue(jsonResult, ErrorDto[].class)).toList();
+
+        List<ErrorDto> expectedErrorDtos = List.of(
+                new ErrorDto("userRegistrationDto", "password", password, "Password must be at least 8 characters long, contains at least 1 upper case letter, 1 lower case letter, and 1 digit")
         );
 
         assertThat(errorDtos, containsInAnyOrder(expectedErrorDtos.toArray()));
