@@ -24,6 +24,8 @@ public class ForumSecurityConfiguration {
                 .and()
                 .logout()
                 .and()
+                .oauth2Login()
+                .and()
                 .cors()
                 .and()
                 .csrf()
@@ -36,5 +38,4 @@ public class ForumSecurityConfiguration {
     public PasswordEncoder passwordEncoder(){
         return new BCryptPasswordEncoder();
     }
-
 }
