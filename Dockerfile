@@ -1,4 +1,4 @@
-FROM gradle:7.6-jdk17-alpine AS build
+FROM gradle:7.6.3-jdk17-jammy AS build
 COPY --chown=gradle:gradle . /home/gradle/src
 WORKDIR /home/gradle/src
 RUN gradle build --no-daemon
