@@ -12,7 +12,7 @@ services:
     ports:
       - "3307:3306"
     volumes:
-      - C:\Mariadb\data:/var/lib/mysql
+      - ~/mariaDbForum:/var/lib/mysql
     networks:
       - forumNetwork
   web:
